@@ -28,6 +28,7 @@
     "@langchain/core": "0.3.40",
     "@langchain/langgraph": "0.2.48",
     "@langchain/openai": "0.4.4",
-    "dotenv": "16.4.7"
+    "dotenv": "16.4.7",
+    "zod": "3.24.2"
   }
 }
