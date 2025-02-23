@@ -10,9 +10,9 @@ function createInstance(params) {
     apiKey,
     llmType,
   } = params || {};
-  modelName = modelName || process.env.OPENROUTER_BASE_URL;
-  baseURL = baseURL || process.env.OPENROUTER_API_KEY;
-  apiKey = apiKey || process.env.OPENROUTER_MODEL;
+  modelName = modelName || process.env.OPENROUTER_MODEL;
+  baseURL = baseURL || process.env.OPENROUTER_BASE_URL;
+  apiKey = apiKey || process.env.OPENROUTER_API_KEY;
   llmType = llmType || modelName.split('/')[0];
 
   console.log('openRouter openAI createInstance', {
@@ -28,6 +28,9 @@ function createInstance(params) {
       llm = new ChatOpenAI({
         modelName,
         apiKey,
+        modalities: ['text'],
+        maxTokens: 1000,
+        temperature: 0.9,
         configuration: {
           baseURL,
         },
@@ -36,6 +39,8 @@ function createInstance(params) {
     default:
       throw new Error(`Unsupported LLM type: ${llmType}`);
   }
+
+  return llm;
 }
 
 export {

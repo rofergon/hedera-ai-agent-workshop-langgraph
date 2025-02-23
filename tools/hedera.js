@@ -9,11 +9,11 @@ const client = createInstance();
 
 const commandHcsCreateTopicDef = {
   name: 'CMD_HCS_CREATE_TOPIC',
-  description: 'command: create a new HCS Topic',
+  description: 'create a new HCS Topic',
   schema: z.object({
     memo: z
       .string()
-      .describe('a memo to label the topic with'),
+      .describe('a memo for the topic with'),
   }),
 };
 
@@ -21,6 +21,11 @@ async function commandHcsCreateTopicImpl(inputs) {
   console.log('CMD_HCS_CREATE_TOPIC invoked with inputs:', inputs);
 
   const { memo } = inputs;
+
+  // return {
+  //   txId: 'dummy-tx-id',
+  //   topicId: `0.0.${Date.now()}`,
+  // };
 
   const tx = await new TopicCreateTransaction()
     .setTopicMemo(memo)
@@ -45,14 +50,14 @@ const commandHcsCreateTopicTool = tool(commandHcsCreateTopicImpl,commandHcsCreat
 
 const commandHcsSubmitTopicMessageDef = {
   name: 'CMD_HCS_SUBMIT_TOPIC_MESSAGE',
-  description: 'command: submit a message to an existing HCS topic',
+  description: 'submit a message to an existing HCS topic',
   schema: z.object({
     topicId: z
       .string()
-      .describe('the ID of the existing HCS topic to submit a message to'),
+      .describe('the ID of the HCS topic to submit a message to'),
     message: z
       .string()
-      .describe('the text of the message to be added to the topic'),
+      .describe('the text of the message to submit'),
   }),
 };
 
@@ -60,6 +65,12 @@ async function commandHcsSubmitTopicMessageImpl(inputs) {
   console.log('CMD_HCS_SUBMIT_TOPIC_MESSAGE invoked with inputs:', inputs);
 
   const { topicId, message } = inputs;
+
+  // return {
+  //   txId: 'dummy-tx-ID',
+  //   topicId,
+  //   topicSequenceNumber: Date.now(),
+  // };
 
   const tx = await new TopicMessageSubmitTransaction()
     .setTopicId(topicId)

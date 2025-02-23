@@ -3,16 +3,17 @@ import { z } from 'zod';
 
 const queryJokeDef = {
   name: 'QRY_JOKE',
-  description: 'query: retrieves a random joke',
+  description: 'retrieves a random joke',
   schema: z.object({
     contains: z
       .string()
-      .describe('something the joke should mention'),
-    categories: z
-      .enum(['Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky'])
-      .array()
-      .describe('categories for the joke')
+      .describe('something the joke should mention')
       .optional(),
+    // categories: z
+    //   .enum(['Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky'])
+    //   .array()
+    //   .describe('categories for the joke')
+    //   .optional(),
   }),
 };
 
