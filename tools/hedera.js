@@ -39,7 +39,7 @@ async function commandHcsCreateTopicImpl(inputs) {
   };
 }
 
-const commandHcsCreateTopicTool = tool(commandHcsCreateTopicDef, commandHcsCreateTopicImpl);
+const commandHcsCreateTopicTool = tool(commandHcsCreateTopicImpl,commandHcsCreateTopicDef);
 
 /* CMD_HCS_SUBMIT_TOPIC_MESSAGE */
 
@@ -79,10 +79,11 @@ async function commandHcsSubmitTopicMessageImpl(inputs) {
   };
 }
 
-const commandHcsSubmitTopicMessageTool = tool(commandHcsCreateTopicDef, commandHcsCreateTopicImpl);
+const commandHcsSubmitTopicMessageTool = tool(commandHcsSubmitTopicMessageImpl, commandHcsSubmitTopicMessageDef);
 
 const allHederaTools = [
   commandHcsCreateTopicTool,
+  commandHcsSubmitTopicMessageTool,
 ];
 
 export {

@@ -43,7 +43,7 @@ async function queryJokeImpl(inputs) {
   if (setup && delivery) {
     result = `${setup}\n\n${delivery}`;
   } else {
-    result = { joke };
+    result = joke;
   }
   return { joke: result };
 }
