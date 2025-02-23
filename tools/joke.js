@@ -7,36 +7,45 @@ const queryJokeDef = {
   schema: z.object({
     contains: z
       .string()
-      .description('something the joke should mention'),
+      .describe('something the joke should mention'),
     categories: z
       .enum(['Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky'])
       .array()
-      .description('categories for the joke'),
+      .describe('categories for the joke')
+      .optional(),
   }),
 };
 
 async function queryJokeImpl(inputs) {
   console.log('QRY_JOKE invoked with inputs:', inputs);
-  const categories = inputs.categories.length > 0 ? inputs.join(',') : 'Any';
-  const contains = inputs.contains ? 'contains=${contains}&' : '';
+  const categories =
+    (inputs.categories && inputs.categories.length > 0) ?
+    inputs.join(',') :
+    'Any';
+  const contains =
+    inputs.contains ?
+    `contains=${inputs.contains}&` :
+    '';
   const url = `https://v2.jokeapi.dev/joke/${categories}?${contains}format=json&blacklistFlags=nsfw,religious,political,racist,sexist,explicit`;
+  console.log(url);
   const resp = await fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   });
-  if (!Response.ok) {
+  if (!resp.ok) {
     throw new Error(`HTTP error when invoking Joke API: ${resp.status}`);
   }
-  const respJson = await response.json();
+  const respJson = await resp.json();
   const { joke, setup, delivery } = respJson;
   let result;
   if (setup && delivery) {
-    return { joke: `${setup}\n\n${delivery}` };
+    result = `${setup}\n\n${delivery}`;
   } else {
-    return { joke };
+    result = { joke };
   }
+  return { joke: result };
 }
 
 const queryJokeTool = tool(queryJokeImpl, queryJokeDef);

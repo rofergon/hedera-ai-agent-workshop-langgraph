@@ -1,7 +1,7 @@
 import { tool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { TopicCreateTransaction, TopicMessageSubmitTransaction } from '@hashgraph/sdk';
-import { createInstance } from '../api/hedera-client';
+import { createInstance } from '../api/hedera-client.js';
 
 const client = createInstance();
 

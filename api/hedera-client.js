@@ -29,7 +29,7 @@ function createInstance(params) {
 
   const operatorId = AccountId.fromString(id);
   let operatorKey;
-  switch (privateKeyType.toLowercase()) {
+  switch (privateKeyType.toLowerCase()) {
     case 'ecdsa':
       operatorKey = PrivateKey.fromStringECDSA(privateKey);
       break;
