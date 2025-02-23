@@ -10,7 +10,7 @@ function createInstance(params) {
     privateKey,
     network,
     privateKeyType,
-  } = params;
+  } = params || {};
   id = id || process.env.HEDERA_ACCOUNT_ID;
   privateKey = privateKey || process.env.HEDERA_ACCOUNT_PRIVATE_KEY;
   network = network || process.env.HEDERA_ACCOUNT_NETWORK || 'testnet';
