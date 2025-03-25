@@ -9,11 +9,11 @@ const queryJokeDef = {
       .string()
       .describe('something the joke should mention')
       .optional(),
-    // categories: z
-    //   .enum(['Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky'])
-    //   .array()
-    //   .describe('categories for the joke')
-    //   .optional(),
+    categories: z
+      .enum(['Any', 'Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky'])
+      .array()
+      .describe('categories for the joke')
+      .optional(),
   }),
 };
 
