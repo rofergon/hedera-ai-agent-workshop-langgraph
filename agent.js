@@ -7,9 +7,24 @@ import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { HumanMessage } from '@langchain/core/messages';
 import { queryJokeTool } from './tools/joke.js';
 import { commandHcsCreateTopicTool, commandHcsSubmitTopicMessageTool } from './tools/hedera.js';
-import { createInstance } from './api/openrouter-openai.js';
+import { ChatOpenAI } from '@langchain/openai';
+import dotenv from 'dotenv';
 
-const llm = createInstance();
+// Cargar variables de entorno
+dotenv.config();
+
+// Usar directamente ChatOpenAI sin pasar por createInstance
+const llm = new ChatOpenAI({
+  modelName: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+  apiKey: process.env.OPENAI_API_KEY,
+  maxTokens: 1000,
+  temperature: 0.7,
+});
+
+console.log('Configurando agente con OpenAI', {
+  model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+});
+
 const tools = [queryJokeTool, commandHcsCreateTopicTool, commandHcsSubmitTopicMessageTool];
 const checkpointSaver = new MemorySaver();
 const agent = createReactAgent({
@@ -48,13 +63,20 @@ async function obtainAgentReply(userPrompt) {
   return agentReply;
 }
 
+console.log('Agente iniciado. Escribe tu pregunta y presiona Enter dos veces para enviarla.');
+console.log('Para salir, presiona Ctrl+C.');
+
 while (true) {
-  console.log('You:\n');
+  console.log('\nTú:\n');
   const userPrompt = await readUserPrompt();
 
-  console.log('Agent:\n');
-  const agentReply = await obtainAgentReply(userPrompt);
-  console.log(agentReply);
+  console.log('\nAgente:\n');
+  try {
+    const agentReply = await obtainAgentReply(userPrompt);
+    console.log(agentReply);
+  } catch (error) {
+    console.error('Error al obtener respuesta del agente:', error.message);
+  }
 }
 
 /*
