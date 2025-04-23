@@ -6,39 +6,22 @@ dotenv.config({ path: './.env' });
 function createInstance(params) {
   let {
     modelName,
-    baseURL,
     apiKey,
-    llmType,
   } = params || {};
-  modelName = modelName || process.env.OPENROUTER_MODEL;
-  baseURL = baseURL || process.env.OPENROUTER_BASE_URL;
-  apiKey = apiKey || process.env.OPENROUTER_API_KEY;
-  llmType = llmType || modelName.split('/')[0];
+  modelName = modelName || process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
+  apiKey = apiKey || process.env.OPENAI_API_KEY;
 
-  console.log('openRouter openAI createInstance', {
+  console.log('OpenAI createInstance', {
     modelName,
-    baseURL,
-    apiKey: apiKey.substring(0, 12) + '...',
-    llmType,
+    apiKey: apiKey ? apiKey.substring(0, 12) + '...' : 'undefined',
   });
 
-  let llm;
-  switch (llmType) {
-    case 'openai':
-      llm = new ChatOpenAI({
-        modelName,
-        apiKey,
-        modalities: ['text'],
-        maxTokens: 1000,
-        temperature: 0.9,
-        configuration: {
-          baseURL,
-        },
-      });
-      break;
-    default:
-      throw new Error(`Unsupported LLM type: ${llmType}`);
-  }
+  const llm = new ChatOpenAI({
+    modelName,
+    apiKey,
+    maxTokens: 1000,
+    temperature: 0.9,
+  });
 
   return llm;
 }
